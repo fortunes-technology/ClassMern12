@@ -7,18 +7,18 @@ const ContractSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users'
   },
-  link: {
+  url: {
     type: String,
     required: true
   },
-  copyright_usage: {
+  platform: {
     type: String
   },
-  quantity_uses: {
-    type: Number
+  exclusive: {
+    type: Boolean
   },
-  start_date: {
-    type: Date
+  credit: {
+    type: Boolean
   },
   length_usage: {
     type: Number
