@@ -123,14 +123,10 @@ class CreateProfile extends Component {
 
     // Select options for status
     const options = [
-      { label: '* Select Professional Status', value: 0 },
-      { label: 'Developer', value: 'Developer' },
-      { label: 'Junior Developer', value: 'Junior Developer' },
-      { label: 'Senior Developer', value: 'Senior Developer' },
-      { label: 'Manager', value: 'Manager' },
-      { label: 'Student or Learning', value: 'Student or Learning' },
-      { label: 'Instructor or Teacher', value: 'Instructor or Teacher' },
-      { label: 'Intern', value: 'Intern' },
+      { label: '* Select Platform', value: 0 },
+      { label: 'Facebook', value: 'Facebook' },
+      { label: 'Instagram', value: 'Instagram' },
+      { label: 'Twitter', value: 'Twitter' },
       { label: 'Other', value: 'Other' }
     ];
 
@@ -139,9 +135,9 @@ class CreateProfile extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Create Your Profile</h1>
+              <h1 className="display-4 text-center">Create Your Contract</h1>
               <p className="lead text-center">
-                Let's get some information to make your profile stand out
+                Let's get some information to generate your ByteRights ;)
               </p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -160,48 +156,47 @@ class CreateProfile extends Component {
                   onChange={this.onChange}
                   options={options}
                   error={errors.status}
-                  info="Give us an idea of where you are at in your career"
+                  info="Select Platform ... ps I know its just insta for now but I was having fun with drop downs / wanted to save syntax"
                 />
                 <TextFieldGroup
-                  placeholder="Company"
-                  name="company"
-                  value={this.state.company}
+                  placeholder="Quantity of Uses"
+                  name="Quantity_Uses"
+                  value={this.state.Quantity_Uses}
                   onChange={this.onChange}
-                  error={errors.company}
-                  info="Could be your own company or one you work for"
+                  error={errors.Quantity_Uses}
+                  info="How many times do you plan on using this UGC?"
                 />
                 <TextFieldGroup
-                  placeholder="Website"
-                  name="website"
-                  value={this.state.website}
+                  placeholder="start date"
+                  name="start_date"
+                  value={this.state.start_date}
                   onChange={this.onChange}
-                  error={errors.website}
-                  info="Could be your own website or a company one"
+                  error={errors.start_date}
+                  info="What date will this License begin"
                 />
                 <TextFieldGroup
-                  placeholder="Location"
-                  name="location"
-                  value={this.state.location}
+                  placeholder="Length of Usage"
+                  name="length_usage"
+                  value={this.state.length_usage}
                   onChange={this.onChange}
-                  error={errors.location}
-                  info="City or city & state suggested (eg. Boston, MA)"
+                  error={errors.length_usage}
+                  info="How long does the Curator have the rights to is UGC"
                 />
                 <TextFieldGroup
-                  placeholder="* Skills"
-                  name="skills"
-                  value={this.state.skills}
+                  placeholder="Price"
+                  name="Price"
+                  value={this.state.price}
                   onChange={this.onChange}
-                  error={errors.skills}
-                  info="Please use comma separated values (eg.
-                    HTML,CSS,JavaScript,PHP"
+                  error={errors.price}
+                  info="Set Price"
                 />
                 <TextFieldGroup
-                  placeholder="Github Username"
-                  name="githubusername"
-                  value={this.state.githubusername}
+                  placeholder="Date"
+                  name="date"
+                  value={this.state.date}
                   onChange={this.onChange}
-                  error={errors.githubusername}
-                  info="If you want your latest repos and a Github link, include your username"
+                  error={errors.date}
+                  info="Today's Date (This will automatically be populated in the DB and not be shown in the near future"
                 />
                 <TextAreaFieldGroup
                   placeholder="Short Bio"
