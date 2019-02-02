@@ -6,13 +6,12 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
-import { createProfile } from '../../actions/profileActions';
+import { createProfile } from '../../actions/contractActions';
 
 class CreateProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displaySocialInputs: false,
       url: '',
       platform: '',
       exclusive: '',
@@ -35,24 +34,19 @@ class CreateProfile extends Component {
 
   onSubmit(e) {
     e.preventDefault();
+    
+    const contractData = {
+      url: this.state.url,
+      platform: this.state.platform,
+      exclusive: this.state.exclusive,
+      credit: this.state.credit,
+      length_usage: this.state.length_usage,
+      price: this.state.price,
+      comments: this.state.comments,
 
-    const profileData = {
-      handle: this.state.handle,
-      company: this.state.company,
-      website: this.state.website,
-      location: this.state.location,
-      status: this.state.status,
-      skills: this.state.skills,
-      githubusername: this.state.githubusername,
-      bio: this.state.bio,
-      twitter: this.state.twitter,
-      facebook: this.state.facebook,
-      linkedin: this.state.linkedin,
-      youtube: this.state.youtube,
-      instagram: this.state.instagram
     };
 
-    this.props.createContract(profileData, this.props.history);
+    this.props.createContract(contractData, this.props.history);
   }
 
   onChange(e) {
@@ -60,61 +54,9 @@ class CreateProfile extends Component {
   }
 
   render() {
-    const { errors, displaySocialInputs } = this.state;
+    const { errors } = this.state;
 
-    let socialInputs;
-
-    if (displaySocialInputs) {
-      socialInputs = (
-        <div>
-          <InputGroup
-            placeholder="Twitter Profile URL"
-            name="twitter"
-            icon="fab fa-twitter"
-            value={this.state.twitter}
-            onChange={this.onChange}
-            error={errors.twitter}
-          />
-
-          <InputGroup
-            placeholder="Facebook Page URL"
-            name="facebook"
-            icon="fab fa-facebook"
-            value={this.state.facebook}
-            onChange={this.onChange}
-            error={errors.facebook}
-          />
-
-          <InputGroup
-            placeholder="Linkedin Profile URL"
-            name="linkedin"
-            icon="fab fa-linkedin"
-            value={this.state.linkedin}
-            onChange={this.onChange}
-            error={errors.linkedin}
-          />
-
-          <InputGroup
-            placeholder="YouTube Channel URL"
-            name="youtube"
-            icon="fab fa-youtube"
-            value={this.state.youtube}
-            onChange={this.onChange}
-            error={errors.youtube}
-          />
-
-          <InputGroup
-            placeholder="Instagram Page URL"
-            name="instagram"
-            icon="fab fa-instagram"
-            value={this.state.instagram}
-            onChange={this.onChange}
-            error={errors.instagram}
-          />
-        </div>
-      );
-    }
-
+    
     // Select options for status
     const options = [
       { label: '* Select Platform', value: 0 },
@@ -150,6 +92,14 @@ class CreateProfile extends Component {
                   onChange={this.onChange}
                   options={options}
                   error={errors.platform}
+                  info="Select Platform that you will use this content on"
+                />
+                <SelectListGroup
+                  placeholder="exclusive"
+                  name="exclusive"
+                  value={this.state.exclusive}
+                  onChange={this.onChange}
+                  error={errors.exclusive}
                   info="Select Platform that you will use this content on"
                 />
                 <TextFieldGroup
@@ -192,22 +142,6 @@ class CreateProfile extends Component {
                   error={errors.bio}
                   info="Tell us a little about yourself"
                 />
-
-                <div className="mb-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      this.setState(prevState => ({
-                        displaySocialInputs: !prevState.displaySocialInputs
-                      }));
-                    }}
-                    className="btn btn-light"
-                  >
-                    Add Social Network Links
-                  </button>
-                  <span className="text-muted">Optional</span>
-                </div>
-                {socialInputs}
                 <input
                   type="submit"
                   value="Submit"
