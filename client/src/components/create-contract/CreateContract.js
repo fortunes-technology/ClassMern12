@@ -13,19 +13,13 @@ class CreateProfile extends Component {
     super(props);
     this.state = {
       displaySocialInputs: false,
-      handle: '',
-      company: '',
-      website: '',
-      location: '',
-      status: '',
-      skills: '',
-      githubusername: '',
-      bio: '',
-      twitter: '',
-      facebook: '',
-      linkedin: '',
-      youtube: '',
-      instagram: '',
+      url: '',
+      platform: '',
+      exclusive: '',
+      credit: '',
+      length_usage: '',
+      price: '',
+      comments: '',
       errors: {}
     };
 
@@ -58,7 +52,7 @@ class CreateProfile extends Component {
       instagram: this.state.instagram
     };
 
-    this.props.createProfile(profileData, this.props.history);
+    this.props.createContract(profileData, this.props.history);
   }
 
   onChange(e) {
@@ -142,37 +136,29 @@ class CreateProfile extends Component {
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="* Profile Handle"
-                  name="handle"
-                  value={this.state.handle}
+                  placeholder="URL"
+                  name="url"
+                  value={this.state.url}
                   onChange={this.onChange}
-                  error={errors.handle}
-                  info="A unique handle for your profile URL. Your full name, company name, nickname"
+                  error={errors.url}
+                  info="URL containing image for licensing"
                 />
                 <SelectListGroup
-                  placeholder="Status"
-                  name="status"
-                  value={this.state.status}
+                  placeholder="Platform"
+                  name="platform"
+                  value={this.state.platform}
                   onChange={this.onChange}
                   options={options}
-                  error={errors.status}
-                  info="Select Platform ... ps I know its just insta for now but I was having fun with drop downs / wanted to save syntax"
+                  error={errors.platform}
+                  info="Select Platform that you will use this content on"
                 />
                 <TextFieldGroup
-                  placeholder="Quantity of Uses"
-                  name="Quantity_Uses"
-                  value={this.state.Quantity_Uses}
+                  placeholder="credit"
+                  name="credit"
+                  value={this.state.credit}
                   onChange={this.onChange}
-                  error={errors.Quantity_Uses}
-                  info="How many times do you plan on using this UGC?"
-                />
-                <TextFieldGroup
-                  placeholder="start date"
-                  name="start_date"
-                  value={this.state.start_date}
-                  onChange={this.onChange}
-                  error={errors.start_date}
-                  info="What date will this License begin"
+                  error={errors.credit}
+                  info="Will you be giving the creator credit ('yes' or 'no')"
                 />
                 <TextFieldGroup
                   placeholder="Length of Usage"
@@ -190,16 +176,16 @@ class CreateProfile extends Component {
                   error={errors.price}
                   info="Set Price"
                 />
-                <TextFieldGroup
+                {/* <TextFieldGroup
                   placeholder="Date"
                   name="date"
                   value={this.state.date}
                   onChange={this.onChange}
                   error={errors.date}
                   info="Today's Date (This will automatically be populated in the DB and not be shown in the near future"
-                />
+                /> */}
                 <TextAreaFieldGroup
-                  placeholder="Short Bio"
+                  placeholder="Comments"
                   name="bio"
                   value={this.state.bio}
                   onChange={this.onChange}

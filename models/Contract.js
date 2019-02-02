@@ -12,33 +12,37 @@ const ContractSchema = new Schema({
     required: true
   },
   platform: {
-    type: String
+    type: String,
+    required: true
   },
   exclusive: {
-    type: Boolean
+    type: Boolean,
+    required: true
   },
   credit: {
-    type: Boolean
+    type: Boolean,
+    required: true
   },
   length_usage: {
-    type: Number
+    type: Number,
+    required: true
   },
   price: {
-    type: Number
+    type: Number,
+    required: true
   },
   date: {
     type: Date,
     default: Date.now
   },
-  comments: [
+  comment: [
     {
       user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
       },
       text: {
-        type: String,
-        required: true
+        type: String
       },
       name: {
         type: String
