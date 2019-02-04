@@ -6,7 +6,8 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import InputGroup from '../common/InputGroup';
 import SelectListGroup from '../common/SelectListGroup';
-import { createProfile } from '../../actions/contractActions';
+import InputCheckboxGroup from '../common/InputCheckboxGroup';
+import { createContract } from '../../actions/contractActions';
 
 class CreateProfile extends Component {
   constructor(props) {
@@ -14,8 +15,8 @@ class CreateProfile extends Component {
     this.state = {
       url: '',
       platform: '',
-      exclusive: '',
-      credit: '',
+      exclusive: false,
+      credit: true,
       length_usage: '',
       price: '',
       comments: '',
@@ -34,7 +35,7 @@ class CreateProfile extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    
+
     const contractData = {
       url: this.state.url,
       platform: this.state.platform,
@@ -49,14 +50,18 @@ class CreateProfile extends Component {
     this.props.createContract(contractData, this.props.history);
   }
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(event) {
+    if (event.target.type === 'checkbox') {
+      this.setState({ [event.target.name]: event.target.checked });
+    } else {
+      this.setState({ [event.target.name]: event.target.value });
+    }
   }
 
   render() {
     const { errors } = this.state;
 
-    
+
     // Select options for status
     const options = [
       { label: '* Select Platform', value: 0 },
@@ -94,15 +99,15 @@ class CreateProfile extends Component {
                   error={errors.platform}
                   info="Select Platform that you will use this content on"
                 />
-                <SelectListGroup
+                <InputCheckboxGroup
                   placeholder="exclusive"
                   name="exclusive"
                   value={this.state.exclusive}
                   onChange={this.onChange}
                   error={errors.exclusive}
-                  info="Select Platform that you will use this content on"
+                  info="Select Exclusive that you will use this content on"
                 />
-                <TextFieldGroup
+                <InputCheckboxGroup
                   placeholder="credit"
                   name="credit"
                   value={this.state.credit}
@@ -120,7 +125,7 @@ class CreateProfile extends Component {
                 />
                 <TextFieldGroup
                   placeholder="Price"
-                  name="Price"
+                  name="price"
                   value={this.state.price}
                   onChange={this.onChange}
                   error={errors.price}
@@ -136,10 +141,10 @@ class CreateProfile extends Component {
                 /> */}
                 <TextAreaFieldGroup
                   placeholder="Comments"
-                  name="bio"
-                  value={this.state.bio}
+                  name="comments"
+                  value={this.state.comments}
                   onChange={this.onChange}
-                  error={errors.bio}
+                  error={errors.comments}
                   info="Tell us a little about yourself"
                 />
                 <input
@@ -166,6 +171,6 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { createProfile })(
+export default connect(mapStateToProps, { createContract })(
   withRouter(CreateProfile)
 );

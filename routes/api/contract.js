@@ -4,19 +4,19 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 
 // Load Validation
-const validateProfileInput = require('../../validation/contract');
-const validateExperienceInput = require('../../validation/experience');
-const validateEducationInput = require('../../validation/education');
+// const validateProfileInput = require('../../validation/contract');
+// const validateExperienceInput = require('../../validation/experience');
+// const validateEducationInput = require('../../validation/education');
 
 // Load Profile Model
-const Profile = require('../../models/Profile');
+// const Profile = require('../../models/Profile');
 // Load User Model
 const User = require('../../models/User');
 
 //Load Contract Model
 const Contract = require("../../models/Contract")
 
-// @route   GET api/profile/test
+// @route   GET api/contracts/test
 // @desc    Tests profile route
 // @access  Public
 router.get('/test', (req, res) => res.json({ msg: 'contract Works' }));
@@ -27,19 +27,14 @@ router.get('/test', (req, res) => res.json({ msg: 'contract Works' }));
 router.get(
   '/',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    const errors = {};
-
-    Profile.findOne({ user: req.user.id })
+  async (req, res) => {
+    try {
+      let contracts = await Contract.find({ user: req.user.id })
       .populate('user', ['name', 'avatar'])
-      .then(profile => {
-        if (!profile) {
-          errors.noprofile = 'There is no profile for this user';
-          return res.status(404).json(errors);
-        }
-        res.json(profile);
-      })
-      .catch(err => res.status(404).json(err));
+      res.send(contracts)
+    } catch (error) {
+      res.status(500).send(error)
+    }
   }
 );
 
@@ -49,7 +44,7 @@ router.get(
 router.get('/all', (req, res) => {
   const errors = {};
 
-  Profile.find()
+  Contract.find()
     .populate('user', ['name', 'avatar'])
     .then(profiles => {
       if (!profiles) {
@@ -69,7 +64,7 @@ router.get('/all', (req, res) => {
 router.get('/handle/:handle', (req, res) => {
   const errors = {};
 
-  Profile.findOne({ handle: req.params.handle })
+  Contract.findOne({ handle: req.params.handle })
     .populate('user', ['name', 'avatar'])
     .then(profile => {
       if (!profile) {
@@ -89,7 +84,7 @@ router.get('/handle/:handle', (req, res) => {
 router.get('/user/:user_id', (req, res) => {
   const errors = {};
 
-  Profile.findOne({ user: req.params.user_id })
+  Contract.findOne({ user: req.params.user_id })
     .populate('user', ['name', 'avatar'])
     .then(profile => {
       if (!profile) {
@@ -104,62 +99,33 @@ router.get('/user/:user_id', (req, res) => {
     );
 });
 
+// REST API
+// POST = creating a new contract
+// GET '/' = Getting list of feeds
+// GET '/:id' = Getting a single contract
+// DELETE '/:id' = Deleting a single contract
+// PUT '/:id' = Updating a single contract
+
 // @route   POST api/profile
 // @desc    Create or edit user profile
 // @access  Private
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    const { errors, isValid } = validateProfileInput(req.body);
-
-    // Check Validation
-    if (!isValid) {
-      // Return any errors with 400 status
-      return res.status(400).json(errors);
-    }
-
-    // Get fields
-    const contractFields = {};
-    contractFields.user = req.user.id;
-    if (req.body.url) profileFields.url = req.body.url;
-    if (req.body.platform) profileFields.platform = req.body.platform;
-    if (req.body.exclusive) profileFields.exclusive = req.body.exclusive;
-    if (req.body.credit) profileFields.credit = req.body.credit;
-    if (req.body.length_usage) profileFields.length_usage = req.body.length_usage;
-    if (req.body.price) profileFields.price = req.body.price;
-    if (req.body.comment) profileFields.comment = req.body.comment;
-    if (req.body.githubusername)
-      profileFields.githubusername = req.body.githubusername;
-    // Skills - Spilt into array
-    if (typeof req.body.skills !== 'undefined') {
-      profileFields.skills = req.body.skills.split(',');
-    }
-
-
-    contract.findOne({ user: req.user.id }).then(contract => {
-      if (contract) {
-        // Update
-        contract.findOneAndUpdate(
-          { user: req.user.id },
-          { $set: contractFields },
-          { new: true }
-        ).then(contract => res.json(contract));
-      } else {
-        // Create
-
-        // Check if handle exists
-        // contract.findOne({ handle: profileFields.handle }).then(profile => {
-        //   if (profile) {
-        //     errors.handle = 'That handle already exists';
-        //     res.status(400).json(errors);
-        //   }
-
-          // Save Profile
-          new Contract(contractFields).save().then(contract => res.json(contract));
-        });
+  async (req, res) => {
+    try {
+      const contractFields = {...req.body};
+      contractFields.user = req.user.id;
+      if (contractFields.skills) {
+        contractFields.skills = contractFields.skills.split(',');
       }
-    });
+      let contract = await new Contract(contractFields).save();
+      res.json(contract);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(error)
+    }
+
   }
 );
 

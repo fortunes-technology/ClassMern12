@@ -1,10 +1,10 @@
 import axios from 'axios';
-
+import {GET_ERRORS} from './types';
 
 // Create Contract
 export const createContract = (contractData, history) => dispatch => {
     axios
-      .post('/api/contract', contractData)
+      .post('/api/contracts', contractData)
       .then(res => history.push('/dashboard'))
       .catch(err =>
         dispatch({
